@@ -3,9 +3,11 @@ package ru.kata.spring.boot_security.demo.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.DAO.UserDao;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -23,7 +25,9 @@ public class UserServiceImpl implements UserService{
 
     @Transactional(readOnly = true)
     public User getUser(int id) {
-        return  userdao.findById(id);
+        User user = userdao.findById(id);
+        user.setRoles(getAuthorities(user));
+        return user;
     }
 
     @Transactional
@@ -39,5 +43,10 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public void deleteUser(int id) {
         userdao.deleteById(id);
+    }
+
+    @Transactional
+    public Set<Role> getAuthorities (User user) {
+        return userdao.getListAuthorities(user);
     }
 }
