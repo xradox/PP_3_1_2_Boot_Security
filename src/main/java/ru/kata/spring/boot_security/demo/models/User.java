@@ -38,6 +38,15 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public User(String firstName, String lastName, int yearOfBirth, String username, String password, Set<Role> roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.yearOfBirth = yearOfBirth;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
     public int getId() {
         return id;
     }

@@ -2,7 +2,7 @@ package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.DAO.UserRepository;
+import ru.kata.spring.boot_security.demo.DAO.UserDao;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.List;
@@ -10,34 +10,34 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
 
-    private final UserRepository repository;
+    private final UserDao userdao;
 
-    public UserServiceImpl(UserRepository repository) {
-        this.repository = repository;
+    public UserServiceImpl(UserDao userdao) {
+        this.userdao = userdao;
     }
 
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        return repository.findAll();
+        return userdao.findAll();
     }
 
     @Transactional(readOnly = true)
     public User getUser(int id) {
-        return  repository.findById(id).get();
+        return  userdao.findById(id);
     }
 
     @Transactional
     public void saveUser(User user) {
-        repository.save(user);
+        userdao.save(user);
     }
 
     @Transactional
     public void updateUser(User updated) {
-        repository.saveAndFlush(updated);
+        userdao.saveAndFlush(updated);
     }
 
     @Transactional
     public void deleteUser(int id) {
-        repository.deleteById(id);
+        userdao.deleteById(id);
     }
 }
