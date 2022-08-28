@@ -17,9 +17,7 @@ import java.util.Set;
 public class DbInitService implements ApplicationRunner {
 
     private final UserDao userDao;
-
     private final RoleDao roleDao;
-
     private final PasswordEncoder encoder;
 
 
@@ -34,8 +32,14 @@ public class DbInitService implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         roleDao.save(new Role(1,"ROLE_USER"));
         roleDao.save(new Role(2, "ROLE_ADMIN"));
-        userDao.saveAndFlush(new User("John", "Johnson", 1988, "admin", encoder.encode("admin"), Set.of(new Role(1,"ROLE_USER"), new Role(2, "ROLE_ADMIN"))));
-        userDao.saveAndFlush(new User("Derek", "Stevenson", 1977, "user", encoder.encode("user"), Collections.singleton(new Role(1, "ROLE_USER"))));
+
+        userDao.saveAndFlush(new User("John", "Johnson", 1988, "admin",
+                encoder.encode("admin"),
+                Set.of(new Role(1,"ROLE_USER"), new Role(2, "ROLE_ADMIN"))));
+
+        userDao.saveAndFlush(new User("Derek", "Stevenson", 1977, "user",
+                encoder.encode("user"),
+                Collections.singleton(new Role(1, "ROLE_USER"))));
 
     }
 }
