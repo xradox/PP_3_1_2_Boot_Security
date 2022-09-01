@@ -1,9 +1,13 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.services.RoleService;
+import ru.kata.spring.boot_security.demo.services.UserDetailsServiceImpl;
 import ru.kata.spring.boot_security.demo.services.UserService;
 import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
@@ -14,35 +18,32 @@ public class AdminController {
 
     private final UserService service;
 
-    public AdminController(UserServiceImpl service) {
+    private final RoleService roleService;
+
+    private final UserDetailsServiceImpl detailsService;
+
+    private final PasswordEncoder encoder;
+
+    public AdminController(UserServiceImpl service, RoleService roleService, UserDetailsServiceImpl detailsService, PasswordEncoder encoder) {
         this.service = service;
+        this.roleService = roleService;
+        this.detailsService = detailsService;
+        this.encoder = encoder;
     }
 
     @GetMapping
-    public String getUsers(Model model) {
+    public String getUsers(@ModelAttribute("newUser") User user,
+                           Model model) {
         model.addAttribute("users", service.getAllUsers());
+        model.addAttribute("roles", roleService.getRoles());
+        model.addAttribute("currentUser",
+                detailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         return "admin/index";
-    }
-
-    @GetMapping("/{id}")
-    public String showUser(@PathVariable int id, Model model) {
-        model.addAttribute("user", service.getUser(id));
-        return "admin/userpage";
-    }
-
-    @GetMapping("/new")
-    public String newUser(@ModelAttribute("newUser") User newUser) {
-        return "admin/new";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String editUser(@PathVariable int id, Model model) {
-        model.addAttribute("user", service.getUser(id));
-        return "admin/edit";
     }
 
     @PostMapping
     public String saveUser(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         service.saveUser(user);
         return "redirect:/admin";
     }

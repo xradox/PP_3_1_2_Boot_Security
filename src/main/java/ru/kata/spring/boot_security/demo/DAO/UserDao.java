@@ -7,9 +7,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class UserDao {
@@ -49,9 +47,9 @@ public class UserDao {
         manager.remove(findById(id));
     }
 
-    public Set<Role> getListAuthorities (User user) {
+    public List<Role> getListAuthorities (User user) {
         TypedQuery<Role> list = manager.createQuery("select r from Role r join r.users u where u.username = :username", Role.class)
                 .setParameter("username", user.getUsername());
-        return new HashSet<>(list.getResultList());
+        return list.getResultList();
     }
 }

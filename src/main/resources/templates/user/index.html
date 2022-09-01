@@ -1,19 +1,109 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>User page</title>
 </head>
 <body>
-<a th:text="${currentUser.firstName}"></a>
-<br>
-<a th:text="${currentUser.lastName}"></a>
-<br>
-<a th:text="${currentUser.yearOfBirth}"></a>
-<br>
-<hr>
-<form th:method="POST" th:action="@{/logout}">
-    <input type="submit" value="Logout">
-</form>
+    <div class=".container-fluid">
+        <!--хидер-->
+        <div class="row bg-dark text-white">
+            <div class="col-3  align-self-center text-center">
+                <b><a th:text="${currentUser.getUsername()} + ' '"></a></b>
+                <a>with roles:</a>
+                <a th:each="role, stat : ${currentUser.getRoles()}"
+                   th:text="${role.getSimpleName()} + (${stat.last} ? '' : ' ')"></a>
+            </div>
+            <div class="col-9 text-right">
+                <form th:action="@{/logout}" th:method="POST" >
+                    <button class="text-muted btn btn-dark" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+        <!--Конец хидера-->
+        <!--часть после хидерав делится на две части-->
+        <!--первая часть левая-->
+        <div class="row">
+            <div class="col-2">
+            <br>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-user-tab" data-toggle="pill" role="tab"
+                    aria-controls="v-pills-user" aria-selected="true">User</a>
+                </div>
+            </div>
+            <!--правая часть с таблицей-->
+            <div class="col-10 bg-light">
+                <div class="container">
+                    <div class="row">
+                        <h2>User information-page</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col border">
+                            <h5>About user</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col border bg-white">
+                            <div class="col">
+                                <br>
+                                    <table class="table table table-striped">
+                                        <thead>
+                                        <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Year of birth</th>
+                                        <th>Username</th>
+                                        <th>Role</th>
+                                        </tr>
+                                        </thead>
+                                        <tr>
+                                        <td th:text="${currentUser.getId()}"></td>
+                                        <td th:text="${currentUser.getFirstName()}"></td>
+                                        <td th:text="${currentUser.getLastName()}"></td>
+                                        <td th:text="${currentUser.getYearOfBirth()}"></td>
+                                        <td th:text="${currentUser.getUsername()}"></td>
+                                        <td><a th:each="role, stat : ${currentUser.getRoles()}"
+                                           th:text="${role.getSimpleName()} + (${stat.last} ? '' : ' ')"></a></td>
+                                        </tr>
+                                    </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

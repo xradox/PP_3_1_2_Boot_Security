@@ -10,8 +10,7 @@ import ru.kata.spring.boot_security.demo.DAO.UserDao;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 @Component
 public class DbInitService implements ApplicationRunner {
@@ -30,16 +29,16 @@ public class DbInitService implements ApplicationRunner {
 
     @Transactional
     public void run(ApplicationArguments args) {
-        roleDao.save(new Role(1,"ROLE_USER"));
-        roleDao.save(new Role(2, "ROLE_ADMIN"));
+      roleDao.save(new Role(1,"ROLE_USER"));
+      roleDao.save(new Role(2, "ROLE_ADMIN"));
 
-        userDao.saveAndFlush(new User("John", "Johnson", 1988, "admin",
-                encoder.encode("admin"),
-                Set.of(new Role(1,"ROLE_USER"), new Role(2, "ROLE_ADMIN"))));
+      userDao.saveAndFlush(new User("John", "Johnson", 1988, "admin",
+              encoder.encode("admin"),
+              List.of(new Role(1,"ROLE_USER"), new Role(2, "ROLE_ADMIN"))));
 
-        userDao.saveAndFlush(new User("Derek", "Stevenson", 1977, "user",
-                encoder.encode("user"),
-                Collections.singleton(new Role(1, "ROLE_USER"))));
+      userDao.saveAndFlush(new User("Derek", "Stevenson", 1977, "user",
+              encoder.encode("user"),
+              List.of(new Role(1, "ROLE_USER"))));
 
     }
 }

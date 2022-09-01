@@ -7,7 +7,6 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Transactional
-    public Set<Role> getAuthorities (User user) {
+    public List<Role> getAuthorities (User user) {
         return userdao.getListAuthorities(user);
     }
 }
