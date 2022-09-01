@@ -35,10 +35,6 @@ public class UserDao {
         return manager.find(User.class, id);
     }
 
-    public void save(User user) {
-        manager.persist(user);
-    }
-
     public void saveAndFlush(User updated) {
         manager.merge(updated);
     }

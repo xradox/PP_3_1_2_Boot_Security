@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.DAO.RoleDao;
 import ru.kata.spring.boot_security.demo.models.Role;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -17,7 +18,7 @@ public class RoleService {
     }
 
     @Transactional
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roleDao.getRoles();
     }
 }

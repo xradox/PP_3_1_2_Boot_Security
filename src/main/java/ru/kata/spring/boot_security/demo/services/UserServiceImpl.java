@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.services;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.DAO.UserDao;
@@ -13,8 +14,12 @@ public class UserServiceImpl implements UserService{
 
     private final UserDao userdao;
 
-    public UserServiceImpl(UserDao userdao) {
+
+    private final PasswordEncoder encoder;
+
+    public UserServiceImpl(UserDao userdao, PasswordEncoder encoder) {
         this.userdao = userdao;
+        this.encoder = encoder;
     }
 
     @Transactional(readOnly = true)
@@ -31,11 +36,14 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     public void saveUser(User user) {
-        userdao.save(user);
+        user.setPassword(encoder.encode(user.getPassword()));
+        //repository.save(user);
+        userdao.saveAndFlush(user);
     }
 
     @Transactional
     public void updateUser(User updated) {
+        updated.setPassword(encoder.encode(updated.getPassword()));
         userdao.saveAndFlush(updated);
     }
 

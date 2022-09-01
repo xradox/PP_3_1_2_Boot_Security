@@ -25,6 +25,6 @@ public class RegistrationService{
     @Transactional
     public void registerNewUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        userDao.save(user);
+        userDao.saveAndFlush(user);
     }
 }
