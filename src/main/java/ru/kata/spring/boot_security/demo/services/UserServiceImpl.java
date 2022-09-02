@@ -37,13 +37,16 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public void saveUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        //repository.save(user);
         userdao.saveAndFlush(user);
     }
 
     @Transactional
     public void updateUser(User updated) {
-        updated.setPassword(encoder.encode(updated.getPassword()));
+        if(updated.getPassword().isEmpty()) {
+            updated.setPassword(getUser(updated.getId()).getPassword());
+        } else {
+            updated.setPassword(encoder.encode(updated.getPassword()));
+        }
         userdao.saveAndFlush(updated);
     }
 

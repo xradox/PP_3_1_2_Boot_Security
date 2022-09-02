@@ -136,7 +136,7 @@
                                                                             <input type="number" class="form-control" id="year" th:value="${user.getYearOfBirth()}" th:name="yearOfBirth"/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="password1"><b>Password</b></label>
+                                                                            <label for="password1">Password</label>
                                                                             <input type="password" class="form-control" id="password1" th:field="*{password}"/>
                                                                         </div>
                                                                         <div class="form-group">
@@ -144,16 +144,13 @@
                                                                             <input type="text" class="form-control" id="username1" th:value="${user.getUsername()}" th:name="username"/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="firstName"><b>Role</b></label>
-
-                                                                            <label for="role1"></label><select th:field="*{roles}" size="2" multiple
-                                                                                                               class="form-control"
-                                                                                                               id="role1">
-                                                                            <option th:each="role : ${roles}"
-                                                                                    th:text="${role.getName()}"
+                                                                            <label for="role1"><b>Role</b></label>
+                                                                            <select class="form-control" th:field="*{roles}" th:size="${roles.size()}" id="role1" multiple required>
+                                                                                <option th:each="role : ${roles}"
+                                                                                    th:text="${role.getSimpleName()}"
                                                                                     th:value="${role.getId()}">
-                                                                            </option>
-                                                                        </select>
+                                                                                </option>
+                                                                            </select>
                                                                         </div>
                                                                         <button type="button" class="btn btn-secondary"
                                                                                 data-dismiss="modal">Close
@@ -212,16 +209,16 @@
                                                                             <input type="number" class="form-control" id="age11" th:value="${user.getYearOfBirth()}" th:name="age" readonly/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="username11"><b>E-mail</b></label>
+                                                                            <label for="username11"><b>Username</b></label>
                                                                             <input type="text" class="form-control" id="username11" th:value="${user.getUsername()}" th:name="username" readonly/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="role11"><b>Role</b></label>
-                                                                            <select th:field="*{roles}" size="2" multiple
-                                                                                    class="form-control"
+                                                                            <select th:field="*{roles}"
+                                                                                    class="form-control" th:size="${user.getRoles().size()}"
                                                                                     id="role11" readonly>
-                                                                                <option th:each="role : ${roles}"
-                                                                                        th:text="${role.getName()}"
+                                                                                <option th:each="role : ${user.getRoles()}"
+                                                                                        th:text="${role.getSimpleName()}"
                                                                                         th:value="${role.getId()}">
                                                                                 </option>
                                                                             </select>
@@ -292,7 +289,7 @@
                                                                                   class="form-control col-md-3"
                                                                                   id="role">
                                                 <option th:each="role : ${roles}"
-                                                        th:text="${role.getName()}"
+                                                        th:text="${role.getSimpleName()}"
                                                         th:value="${role.getId()}">
                                                 </option>
                                                 </select>

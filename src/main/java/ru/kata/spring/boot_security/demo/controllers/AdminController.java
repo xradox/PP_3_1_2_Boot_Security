@@ -30,6 +30,7 @@ public class AdminController {
     @GetMapping
     public String getUsers(@ModelAttribute("newUser") User user,
                            Model model) {
+        service.getAllUsers().forEach(user1 -> System.out.println(user1.getPassword()));
         model.addAttribute("users", service.getAllUsers());
         model.addAttribute("roles", roleService.getRoles());
         model.addAttribute("currentUser",
@@ -50,7 +51,7 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}")
-    public String editUser(@ModelAttribute User updated) {
+    public String editUser(@ModelAttribute("newUser") User updated) {
         service.updateUser(updated);
         return "redirect:/admin";
     }
