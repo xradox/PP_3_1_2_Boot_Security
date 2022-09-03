@@ -29,16 +29,16 @@ public class DbInitService implements ApplicationRunner {
 
     @Transactional
     public void run(ApplicationArguments args) {
-//    roleDao.save(new Role(1,"ROLE_USER"));
-//    roleDao.save(new Role(2, "ROLE_ADMIN"));
-//
-//    userDao.saveAndFlush(new User("John", "Johnson", 1988, "admin",
-//          encoder.encode("admin"),
-//          List.of(new Role(1,"ROLE_USER"), new Role(2, "ROLE_ADMIN"))));
-//
-//    userDao.saveAndFlush(new User("Derek", "Stevenson", 1977, "user",
-//          encoder.encode("user"),
-//          List.of(new Role(1, "ROLE_USER"))));
-//
+        roleDao.save(new Role(1,"ROLE_USER"));
+        roleDao.save(new Role(2, "ROLE_ADMIN"));
+
+        userDao.saveAndFlush(new User("John", "Johnson", 1988, "admin",
+              encoder.encode("admin"),
+              List.of(new Role(1,"ROLE_USER"), new Role(2, "ROLE_ADMIN"))));
+
+        userDao.saveAndFlush(new User("Derek", "Stevenson", 1977, "user",
+              encoder.encode("user"),
+              List.of(new Role(1, "ROLE_USER"))));
+
     }
 }

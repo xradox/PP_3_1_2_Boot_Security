@@ -26,17 +26,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/admin").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/auth/login", "/auth/registration", "/error").permitAll()
+                .antMatchers("/login", "/error").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/auth/login")
+                .formLogin()
                 .loginProcessingUrl("/process_login")
                 .successHandler(successUserHandler)
-                .failureUrl("/auth/login?error")
+                .failureUrl("/login?error")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/auth/login");
+                .logoutSuccessUrl("/login");
     }
 
     @Override

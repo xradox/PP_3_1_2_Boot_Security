@@ -136,12 +136,12 @@
                                                                             <input type="number" class="form-control" id="year" th:value="${user.getYearOfBirth()}" th:name="yearOfBirth"/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="password1">Password</label>
-                                                                            <input type="password" class="form-control" id="password1" th:field="*{password}"/>
-                                                                        </div>
-                                                                        <div class="form-group">
                                                                             <label for="username1"><b>Username</b></label>
                                                                             <input type="text" class="form-control" id="username1" th:value="${user.getUsername()}" th:name="username"/>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="password1"><b>Password</b></label>
+                                                                            <input type="password" class="form-control" id="password1" th:field="*{password}"/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="role1"><b>Role</b></label>
@@ -270,22 +270,22 @@
                                                        placeholder="Enter year of birth">
                                             </div>
                                             <div class="d-flex flex-column align-items-center mb-3">
-                                                <label for="username" class="font-weight-bold">Username</label>
+                                                <label for="username12" class="font-weight-bold">Username</label>
                                                 <input type="text" class="form-control col-md-3" th:field="*{username}"
-                                                       id="username"
+                                                       id="username12"
                                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                                                       placeholder="Enter username">
+                                                       placeholder="Enter username" required>
                                             </div>
                                             <div class="d-flex flex-column align-items-center mb-3">
-                                                <label for="password" class="font-weight-bold">Password</label>
-                                                <input type="password" class="form-control col-md-3"
-                                                       th:field="*{password}" id="password"
+                                                <label for="password12" class="font-weight-bold">Password</label>
+                                                <input type="password" class="form-control col-md-3" th:field="*{password}"
+                                                       id="password12"
                                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                                                       placeholder="Enter password">
+                                                       placeholder="Enter password" required>
                                             </div>
                                             <div class="d-flex flex-column align-items-center mb-3">
                                                 <label for="role" class="font-weight-bold">Role</label>
-                                                <select th:field="*{roles}" size="2" multiple
+                                                <select th:field="*{roles}" size="2" multiple required
                                                                                   class="form-control col-md-3"
                                                                                   id="role">
                                                 <option th:each="role : ${roles}"
