@@ -5,40 +5,38 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
 public class User implements UserDetails {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "year_of_birth")
     private int yearOfBirth;
 
-    @Column(name = "username")
+    @Column(unique = true, nullable = false)
     private String username;
 
-
-    @Column(name = "password")
+    @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Role> roles;
+    @ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    private List<Role> roles;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, int yearOfBirth, String username, String password, Set<Role> roles) {
+    public User(String firstName, String lastName, int yearOfBirth, String username, String password, List<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.yearOfBirth = yearOfBirth;
@@ -87,11 +85,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
@@ -128,5 +126,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", yearOfBirth=" + yearOfBirth +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

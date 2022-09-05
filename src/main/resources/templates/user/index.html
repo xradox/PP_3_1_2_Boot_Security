@@ -1,19 +1,93 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User page</title>
+    <title>Admin page</title>
+
+    <!-- Bootstrap CSS (Cloudflare CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css"
+          integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- jQuery (Cloudflare CDN) -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Bootstrap Bundle JS (Cloudflare CDN) -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.min.js"
+            integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Users</title>
 </head>
+
 <body>
-<a th:text="${currentUser.firstName}"></a>
-<br>
-<a th:text="${currentUser.lastName}"></a>
-<br>
-<a th:text="${currentUser.yearOfBirth}"></a>
-<br>
-<hr>
-<form th:method="POST" th:action="@{/logout}">
-    <input type="submit" value="Logout">
-</form>
+<div class=".container-fluid">
+    <div class="p-2 bg-dark text-white">
+        <div class="row">
+            <div class="col-sm-8">
+                <span th:text="${currentUser.getUsername()}" class="fw-bolder text-white bg-dark font-weight-bold"></span>
+                <span class="text-start">with roles:
+                    <a th:each="role : ${currentUser.getRoles()}" th:text="${role.getSimpleName()} + ' '"></a>
+                </span>
+            </div>
+            <div class="col-sm-4">
+                <form th:action="@{/logout}" th:method="POST">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button class="text-muted btn btn-dark" type="submit">Logout</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class=".container-fluid">
+    <div class="row mt-2">
+        <div class="col-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-user-tab" data-toggle="pill" role="tab"
+                   aria-controls="v-pills-user" aria-selected="true">User</a>
+            </div>
+        </div>
+        <div class="col-10 bg-light">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+                    <h2>User information-page</h2>
+                    <div class="tab-content1" id="nav-tabContent1">
+                        <div class="tab-pane fade show active" id="nav-home1" role="tabpanel"
+                             aria-labelledby="nav-home-tab">
+                            <div class="card">
+                                <h5 class="card-header">About user</h5>
+                                <div class="card-body">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>First name</th>
+                                            <th>Last name</th>
+                                            <th>Year of birth</th>
+                                            <th>Username</th>
+                                            <th>Role</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th th:text="${currentUser.id}"></th>
+                                            <td th:text="${currentUser.firstName}"></td>
+                                            <td th:text="${currentUser.lastName}"></td>
+                                            <td th:text="${currentUser.yearOfBirth}"></td>
+                                            <td th:text="${currentUser.username}"></td>
+                                            <td><a th:each="role : ${currentUser.getRoles()}"
+                                                   th:text="${role.getSimpleName()} + ' '"></a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

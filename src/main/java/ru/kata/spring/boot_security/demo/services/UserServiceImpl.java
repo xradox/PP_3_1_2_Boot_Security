@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.services;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.DAO.UserDao;
@@ -7,15 +8,18 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService{
 
     private final UserDao userdao;
 
-    public UserServiceImpl(UserDao userdao) {
+
+    private final PasswordEncoder encoder;
+
+    public UserServiceImpl(UserDao userdao, PasswordEncoder encoder) {
         this.userdao = userdao;
+        this.encoder = encoder;
     }
 
     @Transactional(readOnly = true)
@@ -32,11 +36,17 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     public void saveUser(User user) {
-        userdao.save(user);
+        user.setPassword(encoder.encode(user.getPassword()));
+        userdao.saveAndFlush(user);
     }
 
     @Transactional
     public void updateUser(User updated) {
+        if(updated.getPassword().isEmpty()) {
+            updated.setPassword(getUser(updated.getId()).getPassword());
+        } else {
+            updated.setPassword(encoder.encode(updated.getPassword()));
+        }
         userdao.saveAndFlush(updated);
     }
 
@@ -46,7 +56,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Transactional
-    public Set<Role> getAuthorities (User user) {
+    public List<Role> getAuthorities (User user) {
         return userdao.getListAuthorities(user);
     }
 }
