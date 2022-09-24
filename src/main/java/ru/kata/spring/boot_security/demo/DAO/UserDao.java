@@ -7,7 +7,9 @@ import ru.kata.spring.boot_security.demo.models.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class UserDao {
@@ -31,7 +33,7 @@ public class UserDao {
         return manager.createQuery("select u from User u", User.class).getResultList();
     }
 
-    public User findById(int id) {
+    public User findById(Long id) {
         return manager.find(User.class, id);
     }
 
@@ -39,13 +41,13 @@ public class UserDao {
         manager.merge(updated);
     }
 
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         manager.remove(findById(id));
     }
 
-    public List<Role> getListAuthorities (User user) {
+    public Set<Role> getListAuthorities (User user) {
         TypedQuery<Role> list = manager.createQuery("select r from Role r join r.users u where u.username = :username", Role.class)
                 .setParameter("username", user.getUsername());
-        return list.getResultList();
+        return new HashSet<>(list.getResultList());
     }
 }
