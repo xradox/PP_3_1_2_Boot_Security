@@ -3,8 +3,8 @@ let currentUser = {
     update: async () => {
         currentUser.user = await fetch('/api/user')
             .then(response => response.json())
-        updateHeader();
-        updateCurrentUserInfo()
+        await updateHeader();
+        await updateCurrentUserInfo()
 
     },
     hasRole: (name) => {
@@ -28,20 +28,20 @@ let users = {
     update: async () => {
         let userList = await fetch('/api/admin/users').then(response => response.json())
         userList.forEach(user => users.userMap.set(user.id, user))
-        updateUserTable()
+        await updateUserTable()
     },
     remove: async (id) => {
         users.userMap.delete(id)
-        updateUserTable()
+        await updateUserTable()
     },
     save: async (user) => {
         users.userMap.set(user.id, user)
-        updateUserTable()
+        await updateUserTable()
     }
 }
 
 let allRoles = {
-    list: [],
+    list: {},
     update: async () => {
         allRoles.list = await fetch('/api/admin/roles')
             .then(response => response.json())
@@ -89,7 +89,7 @@ async function updateUserTable() {
 async function updateRolesInNewUserForm() {
     let select = $('#newUserForm select')
     select.html('')
-    allRoles.list.forEach(role => select.append("<option value='"+role.name+"'>"+role.label))
+    allRoles.list.forEach(role => select.append("<option value='" + JSON.stringify(role) + "'>" + role.label))
 }
 
 
@@ -103,7 +103,6 @@ $(document).ready( async function() {
         $(this).tab('show')
     })
 
-    //Init
     await currentUser.update()
     if (currentUser.hasRole('ROLE_ADMIN')) {
         await users.update()
@@ -112,12 +111,10 @@ $(document).ready( async function() {
         $('#v-pills-admin-tab').remove()
     }
 
-    // JSON from Form
     function getJsonFromUserForm(form) {
         let fd = new FormData(form);
         let user = {roles: []};
         fd.forEach((value, key) => {
-            // Reflect.has in favor of: user.hasOwnProperty(key)
             if (!Reflect.has(user, key)) {
                 user[key] = value;
                 return;
@@ -126,12 +123,17 @@ $(document).ready( async function() {
                 user[key] = [user[key]];
             }
             user[key].push(value);
+            if (key === "roles") {
+                var parsedJson = JSON.parse(value);
+                user[key].push(parsedJson);
+                return;
+            }
+            user[key].push(value);
         });
         user.enabled = (user.enabled === 'on')
         return JSON.stringify(user);
     }
 
-    // EDIT USER MODAL
     $('body').on('click', '.user-edit-button', function () {
 
         let userId = Number($(this).attr('data-user-id'))
@@ -146,11 +148,10 @@ $(document).ready( async function() {
         $('#userEditForm #edit_password').val(user.password)
         let select = $('#userEditForm').find('#edit_roles')
         select.html('')
-        allRoles.list.forEach(role => select.append("<option value='"+role.name+"'>"+role.label))
+        allRoles.list.forEach(role => select.append("<option value='"+JSON.stringify(role)+"'>"+role.label))
         user.roles.forEach(role => select.find('option[value='+role.name+']').prop('selected', true))
     })
 
-    // DELETE USER MODAL
     $('#userTable').on('click', '.user-delete-button', function () {
         let userId = Number($(this).attr('data-user-id'))
         let user = users.userMap.get(userId)
@@ -165,7 +166,6 @@ $(document).ready( async function() {
         user.roles.forEach(role => $('#userDeleteForm').find('#delete_roles').append('<option value="'+role.name+'">'+role.label))
     })
 
-    // ON SUBMIT DELETE FORM
     $('#userDeleteForm').on("submit", async function(event) {
         event.preventDefault(); // return false
         let userId = Number($(this).find('#delete_id').val())
@@ -183,7 +183,6 @@ $(document).ready( async function() {
         }
     })
 
-    // ON SUBMIT EDIT FORM
     $('#userEditForm').on("submit", async function(event) {
         event.preventDefault(); // return false
         let userId = Number($(this).find('#edit_id').val())
@@ -204,7 +203,6 @@ $(document).ready( async function() {
         }
     })
 
-    // ON SUBMIT NEW USER FORM
     $('#newUserForm').on("submit", async function(event) {
         event.preventDefault(); // return false
 
@@ -223,5 +221,4 @@ $(document).ready( async function() {
             this.reset()
         }
     })
-
 });

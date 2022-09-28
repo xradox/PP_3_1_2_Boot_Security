@@ -20,4 +20,14 @@ public class RoleService {
     public List<Role> getRoles() {
         return roleDao.getRoles();
     }
+
+    @Transactional
+    public void save(Role role) {
+        roleDao.save(role);
+    }
+
+    @Transactional(readOnly = true)
+    public Role findRole(String name) {
+        return roleDao.findByName(name);
+    }
 }
